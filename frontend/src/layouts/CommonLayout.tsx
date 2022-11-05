@@ -14,13 +14,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { Outlet } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import toggleOpening from '../hooks/toggleOpening';
+import pageLinks from '../pageLinks';
 
 const drawerWidth = 240;
 
@@ -79,7 +75,7 @@ export default function PersistentDrawerLeft() {
   const [opening, open, close] = toggleOpening(false);
   
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', }}>
       <AppBar position="fixed" open={opening}>
         <Toolbar>
           <IconButton
@@ -116,21 +112,20 @@ export default function PersistentDrawerLeft() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
+          {pageLinks.map((page, index) => (          
+            <Link to={page.link}>
+              <ListItem key={page.link} disablePadding>
+                  <ListItemButton>
+                      {page.title}
+                  </ListItemButton>
+              </ListItem>
+            </Link>
           ))}
         </List>
       </Drawer>
       <Main open={opening}>
         <DrawerHeader />
-        <Outlet />
+          <Outlet />
       </Main>
     </Box>
   );
